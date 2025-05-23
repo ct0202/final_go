@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package shop;
+option go_package = "./api/proto";
+
+service ShopService {
+  // Catalog
+  rpc ListBicycles(ListBicyclesRequest) returns (ListBicyclesResponse);
+  rpc GetBicycle(GetBicycleRequest) returns (Bicycle);
+  rpc SearchBicycles(SearchBicyclesRequest) returns (ListBicyclesResponse);
+
+  // Orders
+  rpc CreateOrder(CreateOrderRequest) returns (Order);
+  rpc GetOrder(GetOrderRequest) returns (Order);
+  rpc CancelOrder(CancelOrderRequest) returns (Empty);
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
+
+  // Rentals
+  rpc CreateRental(CreateRentalRequest) returns (Rental);
+  rpc GetRental(GetRentalRequest) returns (Rental);
+  rpc EndRental(EndRentalRequest) returns (Empty);
+  rpc ListRentals(ListRentalsRequest) returns (ListRentalsResponse);
+
+  // Notifications
+  rpc SendOrderConfirmation(SendOrderConfirmationRequest) returns (Empty);
+  rpc SendRentalConfirmation(SendRentalConfirmationRequest) returns (Empty);
+}
+
+message Empty {}
+
+message Bicycle {
+  string id = 1;
+  string name = 2;
+  string type = 3;
+  double price = 4;
+  bool available = 5;
+}
+
+message ListBicyclesRequest {}
+
+message ListBicyclesResponse {
+  repeated Bicycle bicycles = 1;
+}
+
+message GetBicycleRequest {
+  string id = 1;
+}
+
+message SearchBicyclesRequest {
+  string query = 1;
+}
+
+message Order {
+  string id = 1;
+  string user_id = 2;
+  string bicycle_id = 3;
+  double total_price = 4;
+  string status = 5;
+}
+
+message CreateOrderRequest {
+  string id = 1;
+  string user_id = 2;
+  string bicycle_id = 3;
+  double total_price = 4;
+  string user_email = 5;
+}
+
+message GetOrderRequest {
+  string id = 1;
+}
+
+message CancelOrderRequest {
+  string id = 1;
+}
+
+message ListOrdersRequest {
+  string user_id = 1;
+}
+
+message ListOrdersResponse {
+  repeated Order orders = 1;
+}
+
+message Rental {
+  string id = 1;
+  string user_id = 2;
+  string bicycle_id = 3;
+  string start_time = 4;
+  string end_time = 5;
+  double total_price = 6;
+  string status = 7;
+}
+
+message CreateRentalRequest {
+  string user_id = 1;
+  string bicycle_id = 2;
+  string start_time = 3;
+  string end_time = 4;
+  double total_price = 5;
+}
+
+message GetRentalRequest {
+  string id = 1;
+}
+
+message EndRentalRequest {
+  string id = 1;
+}
+
+message ListRentalsRequest {
+  string user_id = 1;
+}
+
+message ListRentalsResponse {
+  repeated Rental rentals = 1;
+}
+
+message SendOrderConfirmationRequest {
+  string email = 1;
+  string order_id = 2;
+}
+
+message SendRentalConfirmationRequest {
+  string email = 1;
+  string rental_id = 2;
+}
